@@ -49,6 +49,8 @@ class Staff{
         if(res.next()){
           System.out.println("You can now start working");
           //call the StaffUser class which has the Staff methods
+          operations();
+
         }
         
        } catch (SQLException e) {
@@ -57,5 +59,32 @@ class Staff{
 
     }
 
+     public void operations() {
+       BankUser acc = new BankUser();
+       while (true) {
+           System.out.println("What's next");
+           System.out.println("1. Check accounts");
+           System.out.println("2. Close Account");
+           System.out.println("3. Exit");
+           int choice = c.nextInt();
+           switch (choice) {
+               case 1:
+                   acc.viewAccounts();
+                   break;
+               case 2:
+              
+                  acc.closeAccount();
+                  break;
+               case 3:
+                   System.out.println("The story ends");
+                   return;
+               default:
+                   System.out.println("Invalid option");
+                   break;
+           }
+
+
+       }
+   }
 }
 
