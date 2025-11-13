@@ -6,53 +6,25 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         System.out.println("MENU");
         System.out.println("Who is using our system: ");
-        System.out.println("1. Staff");
-        System.out.println("2. Customer");
+        System.out.println("1. Customer");
+        System.out.println("2. Staff");
+        
         int choice = scan.nextInt();
-        try {
-            switch (choice) {
-                case 1:
-                    System.out.println("STAFF_MENU");
-                    System.out.println("1. Create Account");
-                    System.out.println("2.Login");
-                    Staff staff = new Staff();
-                    choice = scan.nextInt();
-                    switch (choice) {
-                        case 1:
-                            staff.createAccount();
-                            break;
-                        case 2:
-                            staff.login();
-                            break;
-                        default:
-                            System.out.println("Invalid option");
-                            break;
-                    }
-
-                    break;
-                case 2:
-                    Customer cust = new Customer();
-                    System.out.println("STAFF_MENU");
-                    System.out.println("1. Create Account");
-                    System.out.println("2.Login");
-
-                    choice = scan.nextInt();
-                    switch (choice) {
-                        case 1:
-                            cust.createAccount();
-                            break;
-                        case 2:
-                            cust.login();
-                            break;
-                        default:
-                            System.out.println("Invalid option");
-                            break;
-                    }
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input");
-        }catch(Exception e){
-            System.out.println("Ohhh! "+e.getMessage());
+        if(choice==1){
+            Customer cust=new Customer();
+            System.out.println("Let's move on with the next steps: ");
+            System.out.println("1.Login");
+            System.out.println("2.Signup");
+            choice=scan.nextInt();
+            if(choice==1){
+                cust.login();
+                cust.operations();
+                
+            } else{
+                cust.signup();
+            }           
+        }else{
+            System.out.println("Daah not easy");
         }
     }
 }
