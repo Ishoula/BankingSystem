@@ -10,7 +10,6 @@ abstract class BankUser {
 
 
     Scanner c = new Scanner(System.in);
-
     abstract void login();
 
     abstract void signup();

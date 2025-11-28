@@ -40,8 +40,7 @@ class Customer extends BankUser {
                 System.out.println("Login successful!");
                 operations();
             } else {
-                System.out.println("Invalid login credentials.");
-                return;
+                throw new InvalidCredentialsException();
             }
 
         } catch (SQLException e) {
@@ -65,8 +64,7 @@ class Customer extends BankUser {
             c.nextLine(); // flush
 
             if (amount < 2000) {
-                System.out.println("Minimum starting balance is 2000.");
-                return;
+                throw new MinimumBalanceException(2000);
             }
 
             PreparedStatement stmt = conn.prepareStatement(SIGNUP_QUERY);
@@ -111,8 +109,7 @@ class Customer extends BankUser {
 
         try (Connection conn = Database.getConnection()) {
             if (!loadAccount(conn, accNum)) {
-                System.out.println("Account not found.");
-                return;
+                throw new AccountNotFoundException(accNum);
             }
 
             System.out.print("Enter amount to deposit: ");
@@ -120,8 +117,7 @@ class Customer extends BankUser {
             c.nextLine();
 
             if (amount <= 0) {
-                System.out.println("Deposit must be greater than zero.");
-                return;
+                throw new MinimumBalanceException(0);
             }
 
             double newBalance = balance + amount;
@@ -143,8 +139,7 @@ class Customer extends BankUser {
 
         try (Connection conn = Database.getConnection()) {
             if (!loadAccount(conn, accNum)) {
-                System.out.println("Account not found.");
-                return;
+                throw new InvalidCredentialsException();
             }
 
             System.out.print("Enter amount to withdraw: ");
@@ -152,13 +147,12 @@ class Customer extends BankUser {
             c.nextLine();
 
             if (amount <= 0) {
-                System.out.println("Amount must be greater than zero.");
-                return;
+                throw new BankExceptions("Amount should be greater than 0");
+
             }
 
             if (amount > balance) {
-                System.out.println("Insufficient funds.");
-                return;
+                throw new InsufficientFundsException(amount, balance);
             }
 
             double newBalance = balance - amount;
@@ -180,8 +174,7 @@ class Customer extends BankUser {
 
         try (Connection conn = Database.getConnection()) {
             if (!loadAccount(conn, accNum)) {
-                System.out.println("Account not found.");
-                return;
+                throw new AccountNotFoundException(accNum);
             }
 
             System.out.println("Your balance: " + balance);
@@ -201,8 +194,7 @@ class Customer extends BankUser {
 
             // Load sender
             if (!loadAccount(conn, accNum)) {
-                System.out.println("Sender account not found.");
-                return;
+                throw new AccountNotFoundException(accNum);
             }
 
             System.out.print("Enter receiver account number: ");
@@ -215,8 +207,7 @@ class Customer extends BankUser {
 
             // Load receiver
             if (!loadAccount(conn, receiverAcc)) {
-                System.out.println("Receiver account not found.");
-                return;
+               throw  new AccountNotFoundException(receiverAcc);
             }
             double receiverBalance = balance;
 
@@ -228,9 +219,10 @@ class Customer extends BankUser {
             double amount = c.nextDouble();
             c.nextLine();
 
-            if (amount <= 0 || amount > senderBalance) {
-                System.out.println("Invalid transfer amount.");
-                return;
+            if (amount > senderBalance) {
+                throw new InsufficientFundsException(amount, senderBalance);
+            } else if (amount<0) {
+                throw  new BankExceptions("Amount to transfer should be greater than 0");
             }
 
             // Update sender

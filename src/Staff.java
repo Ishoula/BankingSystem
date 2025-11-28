@@ -27,8 +27,7 @@ class Staff extends BankUser {
             if (res.next()) {
                 System.out.println("Let's get the job done");
             } else {
-                System.out.println("Invalid credentials");
-                return;
+               throw new InvalidCredentialsException();
             }
 
         } catch (SQLException e) {
@@ -98,7 +97,9 @@ class Staff extends BankUser {
                 System.out.println("Successfully closed the account");
                 return;
             }
-            System.out.println("Account not found");
+            else{
+                throw new AccountNotFoundException(accNum);
+            }
         } catch (SQLException e) {
             System.out.println("SQL error:" + e.getMessage());
         }
