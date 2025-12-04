@@ -38,6 +38,7 @@ class Customer extends BankUser {
             if (res.next()) {
                 accNum = res.getString("accNum");
                 System.out.println("Login successful!");
+                OperationLogger.log("Customer login successful for acc " + res.getString("accNum"));
                 operations();
             } else {
                 throw new InvalidCredentialsException();
@@ -83,6 +84,7 @@ class Customer extends BankUser {
             if (res.next()) {
                 accNum = res.getString("accNum");
                 System.out.println("Signup successful! Your account number: " + accNum);
+                OperationLogger.log("Customer signup completed for acc " + accNum);
                 operations();
             }
 
@@ -128,6 +130,7 @@ class Customer extends BankUser {
             update.executeUpdate();
 
             System.out.println("Deposit successful. New balance: " + newBalance);
+            OperationLogger.log("Deposit of " + amount + " processed for acc " + accNum);
 
         } catch (SQLException | InputMismatchException e) {
             System.out.println("Error: " + e.getMessage());
@@ -163,6 +166,7 @@ class Customer extends BankUser {
             update.executeUpdate();
 
             System.out.println("Withdrawal successful. New balance: " + newBalance);
+            OperationLogger.log("Withdrawal of " + amount + " processed for acc " + accNum);
 
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
@@ -178,6 +182,7 @@ class Customer extends BankUser {
             }
 
             System.out.println("Your balance: " + balance);
+            OperationLogger.log("Balance check for acc " + accNum + " returned " + balance);
 
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
@@ -239,6 +244,7 @@ class Customer extends BankUser {
 
             conn.commit();
             System.out.println("Transfer successful!");
+            OperationLogger.log("Transfer of " + amount + " from acc " + accNum + " to acc " + receiverAcc + " completed");
 
         } catch (SQLException e) {
             System.out.println("Transfer failed: " + e.getMessage());

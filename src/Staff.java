@@ -26,6 +26,7 @@ class Staff extends BankUser {
             ResultSet res = stmt.executeQuery();
             if (res.next()) {
                 System.out.println("Let's get the job done");
+                OperationLogger.log("Staff login successful for email " + email);
             } else {
                throw new InvalidCredentialsException();
             }
@@ -57,6 +58,7 @@ class Staff extends BankUser {
 
             if (res.next()) {
                 System.out.println("Now let's do business");
+                OperationLogger.log("Staff signup completed for email " + email);
 
             } else {
                 System.out.println("Sign up failed u should try again later");
@@ -95,6 +97,7 @@ class Staff extends BankUser {
                 delStatement.setString(2, accNum);
                 delStatement.executeUpdate();
                 System.out.println("Successfully closed the account");
+                OperationLogger.log("Account " + accNum + " closed by staff " + email);
                 return;
             }
             else{
@@ -121,6 +124,7 @@ class Staff extends BankUser {
                String name=results.getString("name");
                double balance=results.getDouble("balance");
                System.out.println("Account number: "+ accNum+" Name: "+name+" Balance: "+ balance);
+               OperationLogger.log("Staff " + email + " viewed account " + accNum);
                System.out.println("                                    ____________________________                                 ");
            }
            if(!found){
